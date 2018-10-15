@@ -9,6 +9,7 @@ namespace Calculator
     const int MAX_DIGITS = 10;
 
     private string displayText;
+    private bool isDisplayNegative;
 
     public MainPage()
     {
@@ -25,12 +26,27 @@ namespace Calculator
 
     private void ClearDisplay()
     {
-      displayText = "0";
+      isDisplayNegative = false;
+      displayText = string.Empty;
     }
 
     private void RefreshDisplay()
     {
-      displayLabel.Text = displayText;
+      if(isDisplayNegative)
+      {
+        displayLabel.Text = "-";
+      }
+      else if(displayText == string.Empty)
+      {
+        displayLabel.Text = "0";
+      }
+      else
+      {
+        displayLabel.Text = string.Empty;
+      }
+        
+      displayLabel.Text += displayText;
+
       if(!displayText.Contains('.'))
       {
         displayLabel.Text += '.';
@@ -61,10 +77,24 @@ namespace Calculator
 
     private void DecimalPointButton_Clicked(object sender, EventArgs e)
     {
-      if(!displayText.Contains('.'))
+      if(displayText == string.Empty)
+      {
+        displayText = "0.";
+      }
+      else if(!displayText.Contains('.'))
       {
         displayText += '.';
       }
+      RefreshDisplay();
+    }
+
+    private void UnaryPlusMinusButton_Clicked(object sender, EventArgs e)
+    {
+      if(displayText != string.Empty)
+      {
+        isDisplayNegative = !isDisplayNegative;
+      }
+      RefreshDisplay();
     }
   }
 }
